@@ -1,0 +1,16 @@
+import "pkg:/source/utilities/utilities.bs"
+
+namespace api
+    ' https://developer.jamendo.com/v3.0/radios
+    namespace radios
+        function get(clientID as string, offset as integer, limit as integer) as dynamic
+            return getJson(`https://api.jamendo.com/v3.0/radios/?client_id=${clientID}&format=json&limit=${limit}&offset=${offset}`)
+        end function
+    end namespace
+
+    namespace tracks
+        function file(clientID as string, id as integer) as string
+            return `https://api.jamendo.com/v3.0/tracks/file/?client_id=${clientID}&id=${id}&action=stream&audioformat=mp32`
+        end function
+    end namespace
+end namespace

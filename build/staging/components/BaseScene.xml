@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="BaseScene" extends="Scene">
     <script type="text/brightscript" uri="pkg:/components/BaseScene.brs" />
+    <script type="text/brightscript" uri="pkg:/source/api/jamendoSDK.brs" />
+    <script type="text/brightscript" uri="pkg:/source/utilities/utilities.brs" />
     <script type="text/brightscript" uri="pkg:/source/bslib.brs" />
     <children>
+        <Audio id="audioPlayer" />
         <Group id="content">
-            <Label color="#aaaaaa" font="font:SmallestSystemFont" horizAlign="center" text="Atse!" />
+            <RadioGrid id="radioGrid" basePosterSize="[150, 100]" numColumns="5" numRows="99" caption1NumLines="1" itemSpacing="[50, 50]" />
         </Group>
     </children>
 </component>

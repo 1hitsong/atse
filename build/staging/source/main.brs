@@ -3,6 +3,9 @@ sub Main(args as dynamic) as void
     m.port = CreateObject("roMessagePort")
     m.screen.setMessagePort(m.port)
     m.global = m.screen.getGlobalNode()
+    m.global.addFields({
+        clientID: "7a2ca6c8"
+    })
     m.scene = m.screen.CreateScene("BaseScene")
     m.screen.show()
     while true

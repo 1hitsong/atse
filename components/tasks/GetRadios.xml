@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<component name="GetRadios" extends="Task">
+    <interface>
+        <field id="clientID" type="string" />
+        <field id="limit" type="integer" />
+        <field id="offset" type="integer" />
+        <field id="responseBody" type="assocarray" value="{}" />
+    </interface>
+</component>
