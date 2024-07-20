@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="BaseScene" extends="Scene">
+  <children>
+    <Group id="content">
+      <Label color="#aaaaaa" font="font:SmallestSystemFont" horizAlign="center" text="Atse!" />
+    </Group>
+  </children>
+</component>

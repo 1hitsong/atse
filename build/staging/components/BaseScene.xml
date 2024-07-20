@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="BaseScene" extends="Scene">
+    <script type="text/brightscript" uri="pkg:/components/BaseScene.brs" />
+    <script type="text/brightscript" uri="pkg:/source/bslib.brs" />
+    <children>
+        <Group id="content">
+            <Label color="#aaaaaa" font="font:SmallestSystemFont" horizAlign="center" text="Atse!" />
+        </Group>
+    </children>
+</component>
+<!--//# sourceMappingURL=./BaseScene.xml.map -->
