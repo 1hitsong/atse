@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<component name="RadioGrid" extends="PosterGrid">
-    <script type="text/brightscript" uri="pkg:/components/Radio/RadioGrid.brs" />
-    <script type="text/brightscript" uri="pkg:/source/utilities/utilities.brs" />
-    <script type="text/brightscript" uri="pkg:/source/bslib.brs" />
-</component>
-<!--//# sourceMappingURL=./RadioGrid.xml.map -->
