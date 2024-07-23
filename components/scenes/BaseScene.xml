@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="BaseScene" extends="Scene">
+    <children>
+        <Audio id="audioPlayer" />
+        <Group id="content">
+            <RadioGrid
+                id="radioGrid"
+                basePosterSize="[150, 100]"
+                numColumns="5"
+                numRows="99"
+                caption1NumLines="1"
+                itemSpacing="[50, 50]" />
+        </Group>
+        <Rectangle
+            color="0x000000DD"
+            height="120"
+            translation="[0,600]"
+            width="1280"
+        />
+        <LayoutGroup
+            id="nowPlaying"
+            layoutDirection="horiz"
+            translation="[10, 610]">
+            <Poster
+                id="cover"
+                width="100"
+                height="100" />
+            <LayoutGroup layoutDirection="vert">
+                <Label id="artist" />
+                <Label id="title" />
+            </LayoutGroup>
+        </LayoutGroup>
+    </children>
+</component>

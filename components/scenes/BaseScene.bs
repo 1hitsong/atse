@@ -1,3 +1,4 @@
+import "pkg:/source/utilities/utilities.bs"
 import "pkg:/source/api/jamendoSDK.bs"
 
 sub init()
@@ -5,6 +6,9 @@ sub init()
     m.top.backgroundURI = ""
 
     m.audioPlayer = m.top.findNode("audioPlayer")
+    m.artist = m.top.findNode("artist")
+    m.title = m.top.findNode("title")
+    m.cover = m.top.findNode("cover")
 
     m.radioGrid = m.top.findNode("radioGrid")
     m.radioGrid.setFocus(true)
@@ -40,6 +44,10 @@ sub onResponseBodyLoaded()
 end sub
 
 sub onTracksLoaded()
+    if not isValid(m.getTracksTask.responseBody) then return
+    if not isValid(m.getTracksTask.responseBody.results) then return
+    if m.getTracksTask.responseBody.results.count() = 0 then return
+
     audioContent = createObject("RoSGNode", "ContentNode")
     audioContent.url = api.tracks.file(`7a2ca6c8`, m.getTracksTask.responseBody.results[0].id)
     audioContent.title = `${m.getTracksTask.responseBody.results[0].artist_name} - ${m.getTracksTask.responseBody.results[0].name}`
@@ -47,4 +55,8 @@ sub onTracksLoaded()
 
     m.audioPlayer.content = audioContent
     m.audioPlayer.control = "play"
+
+    m.artist.text = decode(m.getTracksTask.responseBody.results[0].artist_name)
+    m.title.text = m.getTracksTask.responseBody.results[0].name
+    m.cover.uri = m.getTracksTask.responseBody.results[0].image
 end sub

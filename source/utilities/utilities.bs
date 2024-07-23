@@ -47,3 +47,7 @@ function getJson(url as string) as dynamic
 
     return ParseJson(request.GetToString())
 end function
+
+function decode(input as string) as string
+    return input.replace("&amp;", "&")
+end function

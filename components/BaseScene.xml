@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<component name="BaseScene" extends="Scene">
-    <children>
-        <Audio id="audioPlayer" />
-        <Group id="content">
-            <RadioGrid id="radioGrid" basePosterSize="[150, 100]" numColumns="5" numRows="99" caption1NumLines="1" itemSpacing="[50, 50]" />
-        </Group>
-    </children>
-</component>
