@@ -26,8 +26,9 @@
                 width="100"
                 height="100" />
             <LayoutGroup layoutDirection="vert">
-                <Label id="artist" />
                 <Label id="title" />
+                <Label id="artist" />
+                <Label id="album" />
             </LayoutGroup>
         </LayoutGroup>
     </children>

@@ -8,6 +8,7 @@ sub init()
     m.audioPlayer = m.top.findNode("audioPlayer")
     m.artist = m.top.findNode("artist")
     m.title = m.top.findNode("title")
+    m.album = m.top.findNode("album")
     m.cover = m.top.findNode("cover")
 
     m.radioGrid = m.top.findNode("radioGrid")
@@ -57,6 +58,7 @@ sub onTracksLoaded()
     m.audioPlayer.control = "play"
 
     m.artist.text = decode(m.getTracksTask.responseBody.results[0].artist_name)
-    m.title.text = m.getTracksTask.responseBody.results[0].name
+    m.title.text = decode(m.getTracksTask.responseBody.results[0].name)
+    m.album.text = decode(m.getTracksTask.responseBody.results[0].album_name)
     m.cover.uri = m.getTracksTask.responseBody.results[0].image
 end sub
