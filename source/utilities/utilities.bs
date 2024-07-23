@@ -19,6 +19,21 @@ function isAllValid(input as object) as boolean
     return true
 end function
 
+' map: Converts associative array to string
+'
+' @param {dynamic} input - associative array to convert
+' @return {string} conversion of array
+function map(input as dynamic) as string
+    output = []
+    for each item in input.Items()
+        if isValid(item.value)
+            if LCase(type(item.value)) = "roint" and item.value = 0 then continue for
+            output.push(`${item.key}=${item.value}`)
+        end if
+    end for
+    return output.join("&")
+end function
+
 ' getJson: Makes a URL transfer request, returns parsed JSON return
 '
 ' @param {string} url - URL to make request to

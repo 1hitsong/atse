@@ -7,11 +7,15 @@ sub init()
 end sub
 
 sub getRadios()
-    clientID = m.top.clientID
-    offset = m.top.offset
-    limit = m.top.limit
+    if not isValid(m.top.clientID) then return
 
-    if not isAllValid([clientID, offset, limit]) then return
+    params = {
+        client_id: m.top.clientID,
+        id: m.top.radioID,
+        format: "json",
+        limit: m.top.limit,
+        offset: m.top.offset
+    }
 
-    m.top.responseBody = api.radios.get(clientID, offset, limit)
+    m.top.responseBody = api.radios.get(params)
 end sub

@@ -1,0 +1,11 @@
+import "pkg:/source/utilities/utilities.bs"
+import "pkg:/source/api/jamendoSDK.bs"
+
+
+sub init()
+    m.top.functionName = "getTracks"
+end sub
+
+sub getTracks()
+    m.top.responseBody = api.tracks.get(m.top.params)
+end sub

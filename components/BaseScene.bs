@@ -4,15 +4,47 @@ sub init()
     m.top.backgroundColor = "#262626" '"#101010"
     m.top.backgroundURI = ""
 
-    audioContent = createObject("RoSGNode", "ContentNode")
-    audioContent.url = api.tracks.file(`7a2ca6c8`, 1198381)
-    audioContent.title = "Test Video"
-    audioContent.streamformat = "mp3"
-
     m.audioPlayer = m.top.findNode("audioPlayer")
-    m.audioPlayer.content = audioContent
-    ' m.audioPlayer.control = "play"
 
     m.radioGrid = m.top.findNode("radioGrid")
     m.radioGrid.setFocus(true)
+    m.radioGrid.observeField("selectedRadio", "onSelectedRadioChange")
+end sub
+
+sub onSelectedRadioChange()
+    m.getRadiosTask = createObject("roSGNode", "GetRadios")
+    m.getRadiosTask.observeField("responseBody", "onResponseBodyLoaded")
+
+    m.getRadiosTask.clientID = `7a2ca6c8`
+    m.getRadiosTask.radioID = m.radioGrid.selectedRadio
+    m.getRadiosTask.control = "RUN"
+end sub
+
+sub onResponseBodyLoaded()
+    if not isValid(m.getRadiosTask.responseBody) then return
+    selectedRadioGenre = LCase(m.getRadiosTask.responseBody.results[0].name)
+
+    m.getTracksTask = createObject("roSGNode", "GetTracks")
+    m.getTracksTask.observeField("responseBody", "onTracksLoaded")
+
+    m.getTracksTask.params = {
+        client_id: `7a2ca6c8`,
+        format: "jsonpretty",
+        limit: 1,
+        featured: 1,
+        ' speed: "veryhigh",
+        type: "single+albumtrack",
+        tags: selectedRadioGenre
+    }
+    m.getTracksTask.control = "RUN"
+end sub
+
+sub onTracksLoaded()
+    audioContent = createObject("RoSGNode", "ContentNode")
+    audioContent.url = api.tracks.file(`7a2ca6c8`, m.getTracksTask.responseBody.results[0].id)
+    audioContent.title = `${m.getTracksTask.responseBody.results[0].artist_name} - ${m.getTracksTask.responseBody.results[0].name}`
+    audioContent.streamformat = "mp3"
+
+    m.audioPlayer.content = audioContent
+    m.audioPlayer.control = "play"
 end sub

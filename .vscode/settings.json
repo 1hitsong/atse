@@ -1,10 +1,10 @@
 {
   "editor.formatOnSave": true,
   "brightscript.output.hyperlinkFormat": "FilenameAndFunction",
-  "brightscript.bsdk": "node_modules/brighterscript",
   "search.exclude": {
     "**/.git": true,
     "**/node_modules": true
   },
-  "brightscriptcomment.addExtraAtStartAndEnd": false
+  "brightscriptcomment.addExtraAtStartAndEnd": false,
+  "brightscript.bsdk": "node_modules/brighterscript"
 }
