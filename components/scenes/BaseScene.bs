@@ -6,6 +6,8 @@ sub init()
     m.top.backgroundURI = ""
 
     m.audioPlayer = m.top.findNode("audioPlayer")
+    m.audioPlayer.observeField("state", "onStateChange")
+
     m.artist = m.top.findNode("artist")
     m.title = m.top.findNode("title")
     m.album = m.top.findNode("album")
@@ -35,8 +37,8 @@ sub onResponseBodyLoaded()
     m.getTracksTask.params = {
         client_id: `7a2ca6c8`,
         format: "jsonpretty",
-        limit: 1,
-        featured: 1,
+        limit: 200,
+        ' featured: 1,
         ' speed: "veryhigh",
         type: "single+albumtrack",
         tags: selectedRadioGenre
@@ -50,15 +52,63 @@ sub onTracksLoaded()
     if m.getTracksTask.responseBody.results.count() = 0 then return
 
     audioContent = createObject("RoSGNode", "ContentNode")
-    audioContent.url = api.tracks.file(`7a2ca6c8`, m.getTracksTask.responseBody.results[0].id)
-    audioContent.title = `${m.getTracksTask.responseBody.results[0].artist_name} - ${m.getTracksTask.responseBody.results[0].name}`
-    audioContent.streamformat = "mp3"
+
+    ' Create an array of all possible song indexes
+    indexList = []
+    for i = 0 to m.getTracksTask.responseBody.results.count() - 1
+        indexList.push(i)
+    end for
+
+    ' Shuffle song indexes
+    for i = 0 to indexList.count() - 1
+        j = Rnd(indexList.count() - 1)
+        temp = indexList[i]
+        indexList[i] = indexList[j]
+        indexList[j] = temp
+    end for
+
+    ' Add song content in shuffled order
+    for each songIndex in indexList
+        song = m.getTracksTask.responseBody.results[songIndex]
+        songContent = createObject("RoSGNode", "ContentNode")
+        songContent.ContentType = 5
+        songContent.url = api.tracks.file(`7a2ca6c8`, song.id)
+        songContent.title = decode(song.name)
+        songContent.streamformat = "mp3"
+        songContent.ShortDescriptionLine1 = decode(song.artist_name)
+        songContent.album = decode(song.album_name)
+        songContent.FHDPosterUrl = song.image
+        audioContent.appendChild(songContent)
+    end for
 
     m.audioPlayer.content = audioContent
     m.audioPlayer.control = "play"
-
-    m.artist.text = decode(m.getTracksTask.responseBody.results[0].artist_name)
-    m.title.text = decode(m.getTracksTask.responseBody.results[0].name)
-    m.album.text = decode(m.getTracksTask.responseBody.results[0].album_name)
-    m.cover.uri = m.getTracksTask.responseBody.results[0].image
 end sub
+
+sub onStateChange()
+
+    if LCase(m.audioPlayer.state) = "playing"
+        currentSong = m.audioPlayer.content.getChild(m.audioPlayer.contentIndex)
+        m.artist.text = currentSong.ShortDescriptionLine1
+        m.title.text = currentSong.title
+        m.album.text = currentSong.album
+        m.cover.uri = currentSong.FHDPosterUrl
+        return
+    end if
+
+    m.artist.text = ""
+    m.title.text = ""
+    m.album.text = ""
+    m.cover.uri = ""
+end sub
+
+function onKeyEvent(key as string, press as boolean) as boolean
+    if not press then return false
+
+    if key = "fastforward"
+        m.audioPlayer.control = "skipcontent"
+        return true
+    end if
+
+    return false
+end function

@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component name="BaseScene" extends="Scene">
     <children>
-        <Audio id="audioPlayer" />
+        <Audio id="audioPlayer" contentIsPlaylist="true" />
         <Group id="content">
             <RadioGrid
                 id="radioGrid"
+                vertFocusAnimationStyle="fixedFocus"
+                translation="[50,50]"
                 basePosterSize="[150, 100]"
-                numColumns="5"
+                numColumns="6"
                 numRows="99"
-                caption1NumLines="1"
-                itemSpacing="[50, 50]" />
+                caption1NumLines="2"
+                itemSpacing="[50, 40]" />
         </Group>
         <Rectangle
             color="0x000000DD"
@@ -20,7 +22,8 @@
         <LayoutGroup
             id="nowPlaying"
             layoutDirection="horiz"
-            translation="[10, 610]">
+            itemSpacings="[0, 25]"
+            translation="[50, 610]">
             <Poster
                 id="cover"
                 width="100"
