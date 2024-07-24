@@ -8,10 +8,7 @@ sub init()
     m.audioPlayer = m.top.findNode("audioPlayer")
     m.audioPlayer.observeField("state", "onStateChange")
 
-    m.artist = m.top.findNode("artist")
-    m.title = m.top.findNode("title")
-    m.album = m.top.findNode("album")
-    m.cover = m.top.findNode("cover")
+    m.nowPlaying = m.top.findNode("nowPlaying")
 
     m.radioGrid = m.top.findNode("radioGrid")
     m.radioGrid.setFocus(true)
@@ -51,7 +48,7 @@ sub onTracksLoaded()
     if not isValid(m.getTracksTask.responseBody.results) then return
     if m.getTracksTask.responseBody.results.count() = 0 then return
 
-    audioContent = createObject("RoSGNode", "ContentNode")
+    m.audioContent = createObject("RoSGNode", "ContentNode")
 
     ' Create an array of all possible song indexes
     indexList = []
@@ -67,48 +64,59 @@ sub onTracksLoaded()
         indexList[j] = temp
     end for
 
+    'Quick load 1st song
+    song = m.getTracksTask.responseBody.results[indexList[0]]
+    songContent = createObject("RoSGNode", "ContentNode")
+    songContent.ContentType = 5
+    songContent.url = api.tracks.file(`7a2ca6c8`, song.id)
+    songContent.title = song.name
+    songContent.streamformat = "mp3"
+    songContent.ShortDescriptionLine1 = song.artist_name
+    songContent.album = song.album_name
+    songContent.FHDPosterUrl = song.image
+    m.audioPlayer.content = songContent
+    m.audioPlayer.control = "play"
+
     ' Add song content in shuffled order
     for each songIndex in indexList
         song = m.getTracksTask.responseBody.results[songIndex]
         songContent = createObject("RoSGNode", "ContentNode")
         songContent.ContentType = 5
         songContent.url = api.tracks.file(`7a2ca6c8`, song.id)
-        songContent.title = decode(song.name)
+        songContent.title = song.name
         songContent.streamformat = "mp3"
-        songContent.ShortDescriptionLine1 = decode(song.artist_name)
-        songContent.album = decode(song.album_name)
+        songContent.ShortDescriptionLine1 = song.artist_name
+        songContent.album = song.album_name
         songContent.FHDPosterUrl = song.image
-        audioContent.appendChild(songContent)
+        m.audioContent.appendChild(songContent)
     end for
-
-    m.audioPlayer.content = audioContent
-    m.audioPlayer.control = "play"
 end sub
 
 sub onStateChange()
 
     if LCase(m.audioPlayer.state) = "playing"
-        currentSong = m.audioPlayer.content.getChild(m.audioPlayer.contentIndex)
-        m.artist.text = currentSong.ShortDescriptionLine1
-        m.title.text = currentSong.title
-        m.album.text = currentSong.album
-        m.cover.uri = currentSong.FHDPosterUrl
+        currentSong = m.audioPlayer.content
+        m.nowPlaying.trackArtist = currentSong.ShortDescriptionLine1
+        m.nowPlaying.trackTitle = currentSong.title
+        m.nowPlaying.trackAlbum = currentSong.album
+        m.nowPlaying.trackCover = currentSong.FHDPosterUrl
         return
     end if
 
-    m.artist.text = ""
-    m.title.text = ""
-    m.album.text = ""
-    m.cover.uri = ""
+    if LCase(m.audioPlayer.state) = "finished"
+        m.audioContent.removeChildIndex(0)
+        m.audioPlayer.content = m.audioContent.getChild(0)
+        m.audioPlayer.control = "play"
+    end if
+
+    m.nowPlaying.trackArtist = ""
+    m.nowPlaying.trackTitle = ""
+    m.nowPlaying.trackAlbum = ""
+    m.nowPlaying.trackCover = ""
 end sub
 
 function onKeyEvent(key as string, press as boolean) as boolean
     if not press then return false
-
-    if key = "fastforward"
-        m.audioPlayer.control = "skipcontent"
-        return true
-    end if
 
     return false
 end function
