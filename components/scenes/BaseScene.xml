@@ -13,6 +13,6 @@
                 caption1NumLines="2"
                 itemSpacing="[50, 40]" />
         </Group>
-        <NowPlaying id="nowPlaying" translation="[0, 600]" />
+        <NowPlaying id="nowPlaying" translation="[0, 800]" />
     </children>
 </component>

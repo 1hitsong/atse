@@ -16,6 +16,11 @@ sub init()
 end sub
 
 sub onSelectedRadioChange()
+    m.progressDialog = createObject("roSGNode", "StandardProgressDialog")
+    m.progressDialog.title = "Loading"
+    m.progressDialog.message = "Loading radio playlist data"
+    m.top.getScene().dialog = m.progressDialog
+
     m.getRadiosTask = createObject("roSGNode", "GetRadios")
     m.getRadiosTask.observeField("responseBody", "onResponseBodyLoaded")
 
@@ -34,7 +39,7 @@ sub onResponseBodyLoaded()
     m.getTracksTask.params = {
         client_id: `7a2ca6c8`,
         format: "jsonpretty",
-        limit: 200,
+        limit: 5,
         ' featured: 1,
         ' speed: "veryhigh",
         type: "single+albumtrack",
@@ -95,6 +100,11 @@ end sub
 sub onStateChange()
 
     if LCase(m.audioPlayer.state) = "playing"
+        m.progressDialog.close = true
+
+        if m.nowPlaying.translation[1] <> 600
+            m.nowPlaying.translation = [0, 600]
+        end if
         currentSong = m.audioPlayer.content
         m.nowPlaying.trackArtist = currentSong.ShortDescriptionLine1
         m.nowPlaying.trackTitle = currentSong.title
@@ -107,8 +117,10 @@ sub onStateChange()
         m.audioContent.removeChildIndex(0)
         m.audioPlayer.content = m.audioContent.getChild(0)
         m.audioPlayer.control = "play"
+        return
     end if
 
+    m.nowPlaying.translation = [0, 800]
     m.nowPlaying.trackArtist = ""
     m.nowPlaying.trackTitle = ""
     m.nowPlaying.trackAlbum = ""
