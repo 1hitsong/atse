@@ -1,2 +1,2 @@
 # atse
-## A Jamendo client for Roku
+## A Jamendo radio player for Roku
