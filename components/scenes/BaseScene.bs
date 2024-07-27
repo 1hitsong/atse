@@ -6,15 +6,21 @@ sub init()
     m.top.backgroundURI = ""
 
     m.audioPlayer = m.top.findNode("audioPlayer")
-    m.audioPlayer.observeField("state", "onStateChange")
-
     m.nowPlaying = m.top.findNode("nowPlaying")
+
+    m.audioPlayer.observeField("state", "onStateChange")
+    m.audioPlayer.observeField("position", "onPositionChange")
+
     m.showNowPlayingAnimation = m.top.findNode("showNowPlayingAnimation")
     m.hideNowPlayingAnimation = m.top.findNode("hideNowPlayingAnimation")
 
     m.radioGrid = m.top.findNode("radioGrid")
     m.radioGrid.setFocus(true)
     m.radioGrid.observeField("selectedRadio", "onSelectedRadioChange")
+end sub
+
+sub onPositionChange()
+    m.nowPlaying.position = m.audioPlayer.position / m.audioPlayer.duration
 end sub
 
 sub onSelectedRadioChange()

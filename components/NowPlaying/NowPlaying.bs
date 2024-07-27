@@ -1,24 +1,28 @@
 import "pkg:/source/utilities/utilities.bs"
 
-sub setTitle()
-    titleNode = m.top.findNode("title")
-    if not isValid(titleNode) then return
+sub init()
+    m.titleNode = m.top.findNode("title")
+    m.artistNode = m.top.findNode("artist")
+    m.albumNode = m.top.findNode("album")
 
-    titleNode.text = decode(m.top.trackTitle)
+    m.titleNode.font.size = 30
+    m.artistNode.font.size = 22
+    m.albumNode.font.size = 17
+end sub
+
+sub setTitle()
+    if not isValid(m.titleNode) then return
+    m.titleNode.text = decode(m.top.trackTitle)
 end sub
 
 sub setArtist()
-    artistNode = m.top.findNode("artist")
-    if not isValid(artistNode) then return
-
-    artistNode.text = decode(m.top.trackArtist)
+    if not isValid(m.artistNode) then return
+    m.artistNode.text = decode(m.top.trackArtist)
 end sub
 
 sub setAlbum()
-    albumNode = m.top.findNode("album")
-    if not isValid(albumNode) then return
-
-    albumNode.text = decode(m.top.trackAlbum)
+    if not isValid(m.albumNode) then return
+    m.albumNode.text = decode(m.top.trackAlbum)
 end sub
 
 sub setCover()
@@ -33,4 +37,11 @@ sub setPaused()
     if not isValid(pausedOverlay) then return
 
     pausedOverlay.visible = m.top.isPaused
+end sub
+
+sub setPosition()
+    positionBar = m.top.findNode("positionBar")
+    if not isValid(positionBar) then return
+
+    positionBar.width = m.top.position * 1280
 end sub
