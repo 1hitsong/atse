@@ -18,7 +18,7 @@ end sub
 sub onSelectedRadioChange()
     m.progressDialog = createObject("roSGNode", "StandardProgressDialog")
     m.progressDialog.title = "Loading"
-    m.progressDialog.message = "Loading radio playlist data"
+    m.progressDialog.message = "Loading radio data"
     m.top.getScene().dialog = m.progressDialog
 
     m.getRadiosTask = createObject("roSGNode", "GetRadios")
@@ -48,31 +48,55 @@ sub onResponseBodyLoaded()
     m.getTracksTask.control = "RUN"
 end sub
 
-sub onTracksLoaded()
-    if not isValid(m.getTracksTask.responseBody) then return
-    if not isValid(m.getTracksTask.responseBody.results) then return
-    if m.getTracksTask.responseBody.results.count() = 0 then return
+sub noTracksFound()
+    m.progressDialog.close = true
 
-    m.audioContent = createObject("RoSGNode", "ContentNode")
+    m.noTracksDialog = createObject("roSGNode", "StandardMessageDialog")
+    m.noTracksDialog.title = "No Tracks Found"
+    m.noTracksDialog.message = ["Jamendo returned no tracks for this radio."]
+    m.noTracksDialog.buttons = ["OK"]
+    m.noTracksDialog.observeFieldScoped("buttonSelected", "closeNoTracksDialog")
+    m.top.getScene().dialog = m.noTracksDialog
+end sub
+
+sub closeNoTracksDialog()
+    m.noTracksDialog.close = true
+end sub
+
+sub onTracksLoaded()
+    if not isValid(m.getTracksTask.responseBody)
+        noTracksFound()
+        return
+    end if
+
+    if not isValid(m.getTracksTask.responseBody.results)
+        noTracksFound()
+        return
+    end if
+
+    if m.getTracksTask.responseBody.results.count() = 0
+        noTracksFound()
+        return
+    end if
 
     ' Create an array of all possible song indexes
-    indexList = []
+    m.indexList = []
     for i = 0 to m.getTracksTask.responseBody.results.count() - 1
-        indexList.push(i)
+        m.indexList.push(i)
     end for
 
     ' Shuffle song indexes
-    for i = 0 to indexList.count() - 1
-        j = Rnd(indexList.count() - 1)
-        temp = indexList[i]
-        indexList[i] = indexList[j]
-        indexList[j] = temp
+    for i = 0 to m.indexList.count() - 1
+        j = Rnd(m.indexList.count() - 1)
+        temp = m.indexList[i]
+        m.indexList[i] = m.indexList[j]
+        m.indexList[j] = temp
     end for
 
     'Quick load 1st song
-    song = m.getTracksTask.responseBody.results[indexList[0]]
+    song = m.getTracksTask.responseBody.results[m.indexList.shift()]
     songContent = createObject("RoSGNode", "ContentNode")
-    songContent.ContentType = 5
+    songContent.ContentType = 200
     songContent.url = api.tracks.file(`7a2ca6c8`, song.id)
     songContent.title = song.name
     songContent.streamformat = "mp3"
@@ -81,20 +105,6 @@ sub onTracksLoaded()
     songContent.FHDPosterUrl = song.image
     m.audioPlayer.content = songContent
     m.audioPlayer.control = "play"
-
-    ' Add song content in shuffled order
-    for each songIndex in indexList
-        song = m.getTracksTask.responseBody.results[songIndex]
-        songContent = createObject("RoSGNode", "ContentNode")
-        songContent.ContentType = 5
-        songContent.url = api.tracks.file(`7a2ca6c8`, song.id)
-        songContent.title = song.name
-        songContent.streamformat = "mp3"
-        songContent.ShortDescriptionLine1 = song.artist_name
-        songContent.album = song.album_name
-        songContent.FHDPosterUrl = song.image
-        m.audioContent.appendChild(songContent)
-    end for
 end sub
 
 sub onStateChange()
@@ -114,21 +124,39 @@ sub onStateChange()
     end if
 
     if LCase(m.audioPlayer.state) = "finished"
-        m.audioContent.removeChildIndex(0)
-        m.audioPlayer.content = m.audioContent.getChild(0)
-        m.audioPlayer.control = "play"
-        return
+        if m.indexList.count() > 0
+            song = m.getTracksTask.responseBody.results[m.indexList.shift()]
+            songContent = createObject("RoSGNode", "ContentNode")
+            songContent.ContentType = 5
+            songContent.url = api.tracks.file(`7a2ca6c8`, song.id)
+            songContent.title = song.name
+            songContent.streamformat = "mp3"
+            songContent.ShortDescriptionLine1 = song.artist_name
+            songContent.album = song.album_name
+            songContent.FHDPosterUrl = song.image
+            m.audioPlayer.content = songContent
+            m.audioPlayer.control = "play"
+            return
+        end if
     end if
 
-    m.nowPlaying.translation = [0, 800]
-    m.nowPlaying.trackArtist = ""
-    m.nowPlaying.trackTitle = ""
-    m.nowPlaying.trackAlbum = ""
-    m.nowPlaying.trackCover = ""
+    ' There are no more songs in the queue
+    if m.indexList.count() = 0
+        m.nowPlaying.translation = [0, 800]
+        m.nowPlaying.trackArtist = ""
+        m.nowPlaying.trackTitle = ""
+        m.nowPlaying.trackAlbum = ""
+        m.nowPlaying.trackCover = ""
+    end if
 end sub
 
 function onKeyEvent(key as string, press as boolean) as boolean
     if not press then return false
+
+    if LCase(key) = "play"
+        m.audioPlayer.control = LCase(m.audioPlayer.state) = "paused" ? "resume" : "pause"
+        return true
+    end if
 
     return false
 end function

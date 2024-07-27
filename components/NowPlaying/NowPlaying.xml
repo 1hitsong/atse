@@ -7,7 +7,7 @@
             translation="[0,0]"
             width="1280"
         />
-        <LayoutGroup translation="[50, 10]" layoutDirection="horiz" itemSpacings="[0, 25]">
+        <LayoutGroup translation="[50, 10]" layoutDirection="horiz" itemSpacings="[20, 0]">
             <Poster
                 id="cover"
                 width="100"

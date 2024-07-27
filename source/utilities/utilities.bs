@@ -22,6 +22,7 @@ end function
 ' map: Converts associative array to string
 '
 ' @param {dynamic} input - associative array to convert
+'
 ' @return {string} conversion of array
 function map(input as dynamic) as string
     output = []
@@ -48,6 +49,11 @@ function getJson(url as string) as dynamic
     return ParseJson(request.GetToString())
 end function
 
+' decode: Replaces HTML encoded strings with their respective characters
+'
+' @param {string} input - string to decode
+'
+' @return {string} with encoded characters replaced
 function decode(input as string) as string
     return input.replace("&amp;", "&")
 end function
