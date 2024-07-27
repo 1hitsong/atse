@@ -1,17 +1,29 @@
 import "pkg:/source/utilities/utilities.bs"
 
 sub setTitle()
-    m.top.findNode("title").text = decode(m.top.trackTitle)
+    titleNode = m.top.findNode("title")
+    if not isValid(titleNode) then return
+
+    titleNode.text = decode(m.top.trackTitle)
 end sub
 
 sub setArtist()
-    m.top.findNode("artist").text = decode(m.top.trackArtist)
+    artistNode = m.top.findNode("artist")
+    if not isValid(artistNode) then return
+
+    artistNode.text = decode(m.top.trackArtist)
 end sub
 
 sub setAlbum()
-    m.top.findNode("album").text = decode(m.top.trackAlbum)
+    albumNode = m.top.findNode("album")
+    if not isValid(albumNode) then return
+
+    albumNode.text = decode(m.top.trackAlbum)
 end sub
 
 sub setCover()
-    m.top.findNode("cover").uri = decode(m.top.trackCover)
+    coverNode = m.top.findNode("cover")
+    if not isValid(coverNode) then return
+
+    coverNode.uri = decode(m.top.trackCover)
 end sub

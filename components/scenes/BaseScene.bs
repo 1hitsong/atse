@@ -2,7 +2,7 @@ import "pkg:/source/utilities/utilities.bs"
 import "pkg:/source/api/jamendoSDK.bs"
 
 sub init()
-    m.top.backgroundColor = "#262626" '"#101010"
+    m.top.backgroundColor = "#262626"
     m.top.backgroundURI = ""
 
     m.audioPlayer = m.top.findNode("audioPlayer")
@@ -45,7 +45,10 @@ sub onResponseBodyLoaded()
         ' featured: 1,
         ' speed: "veryhigh",
         type: "single+albumtrack",
-        tags: selectedRadioGenre
+        tags: selectedRadioGenre,
+        groupby: "artist_id",
+        audioformat: "mp32",
+        imagesize: "100"
     }
     m.getTracksTask.control = "RUN"
 end sub
@@ -101,7 +104,6 @@ sub onTracksLoaded()
 end sub
 
 sub onStateChange()
-
     if LCase(m.audioPlayer.state) = "playing"
         m.progressDialog.close = true
 

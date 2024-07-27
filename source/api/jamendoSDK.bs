@@ -13,8 +13,5 @@ namespace api
         function get(params as dynamic) as dynamic
             return getJson(`https://api.jamendo.com/v3.0/tracks/?${map(params)}`)
         end function
-        function file(clientID as string, id as dynamic) as string
-            return `https://api.jamendo.com/v3.0/tracks/file/?client_id=${clientID}&id=${id}&action=stream&audioformat=mp32`
-        end function
     end namespace
 end namespace

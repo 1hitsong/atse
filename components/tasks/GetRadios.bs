@@ -7,10 +7,10 @@ sub init()
 end sub
 
 sub getRadios()
-    if not isValid(m.top.clientID) then return
+    if not isAllValid([m.global.clientID, m.top.radioID]) then return
 
     params = {
-        client_id: m.top.clientID,
+        client_id: m.global.clientID,
         id: m.top.radioID,
         format: "json",
         limit: m.top.limit,
