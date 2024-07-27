@@ -18,8 +18,22 @@
                 <Label id="album" />
             </LayoutGroup>
         </LayoutGroup>
+        <Group id="pausedOverlay" visible="false" translation="[0, 0]">
+            <Rectangle
+                color="0x444444DD"
+                height="120"
+                translation="[0,0]"
+                width="1280"
+            />
+            <Label
+                text="Paused"
+                font="font:MediumSystemFont"
+                color="0xffffffFF"
+                translation="[575,50]" />
+        </Group>
     </children>
     <interface>
+        <field id="isPaused" type="boolean" onChange="setPaused" />
         <field id="trackTitle" type="string" onChange="setTitle" />
         <field id="trackArtist" type="string" onChange="setArtist" />
         <field id="trackAlbum" type="string" onChange="setAlbum" />

@@ -104,6 +104,8 @@ sub onTracksLoaded()
 end sub
 
 sub onStateChange()
+    m.nowPlaying.isPaused = LCase(m.audioPlayer.state) = "paused"
+
     if LCase(m.audioPlayer.state) = "playing"
         m.progressDialog.close = true
 

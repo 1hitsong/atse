@@ -1,7 +1,7 @@
 {
   "name": "atse",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A Jamendo client for Roku",
   "dependencies": {
     "@rokucommunity/bslint": "0.8.21",

@@ -27,3 +27,10 @@ sub setCover()
 
     coverNode.uri = decode(m.top.trackCover)
 end sub
+
+sub setPaused()
+    pausedOverlay = m.top.findNode("pausedOverlay")
+    if not isValid(pausedOverlay) then return
+
+    pausedOverlay.visible = m.top.isPaused
+end sub
