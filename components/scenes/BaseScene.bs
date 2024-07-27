@@ -42,6 +42,7 @@ sub onResponseBodyLoaded()
         client_id: `7a2ca6c8`,
         format: "jsonpretty",
         limit: 200,
+        lang: "en"
         ' featured: 1,
         ' speed: "veryhigh",
         type: "single+albumtrack",
