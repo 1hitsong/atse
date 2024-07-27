@@ -14,5 +14,13 @@
                 itemSpacing="[50, 40]" />
         </Group>
         <NowPlaying id="nowPlaying" translation="[0, 800]" />
+        <Animation id="showNowPlayingAnimation" duration="0.5" repeat="false">
+            <Vector2DFieldInterpolator key="[0.0, 1.0]" keyValue="[[0, 800], [0, 600]]"
+                fieldToInterp="nowPlaying.translation" />
+        </Animation>
+        <Animation id="hideNowPlayingAnimation" duration="0.5" repeat="false">
+            <Vector2DFieldInterpolator key="[0.0, 1.0]" keyValue="[[0, 600], [0, 800]]"
+                fieldToInterp="nowPlaying.translation" />
+        </Animation>
     </children>
 </component>

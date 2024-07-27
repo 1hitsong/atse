@@ -22,6 +22,8 @@ sub onResponseBodyLoaded()
     data = CreateObject("roSGNode", "ContentNode")
 
     for each radio in m.getRadiosTask.responseBody.results
+        ' For now, ignore problamatic radio stations
+        if radio.id = 1 then continue for
         if radio.id > 13 then continue for
 
         gridAlbum = CreateObject("roSGNode", "ContentNode")

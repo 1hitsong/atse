@@ -9,6 +9,8 @@ sub init()
     m.audioPlayer.observeField("state", "onStateChange")
 
     m.nowPlaying = m.top.findNode("nowPlaying")
+    m.showNowPlayingAnimation = m.top.findNode("showNowPlayingAnimation")
+    m.hideNowPlayingAnimation = m.top.findNode("hideNowPlayingAnimation")
 
     m.radioGrid = m.top.findNode("radioGrid")
     m.radioGrid.setFocus(true)
@@ -39,7 +41,7 @@ sub onResponseBodyLoaded()
     m.getTracksTask.params = {
         client_id: `7a2ca6c8`,
         format: "jsonpretty",
-        limit: 5,
+        limit: 200,
         ' featured: 1,
         ' speed: "veryhigh",
         type: "single+albumtrack",
@@ -93,17 +95,8 @@ sub onTracksLoaded()
         m.indexList[j] = temp
     end for
 
-    'Quick load 1st song
-    song = m.getTracksTask.responseBody.results[m.indexList.shift()]
-    songContent = createObject("RoSGNode", "ContentNode")
-    songContent.ContentType = 200
-    songContent.url = api.tracks.file(`7a2ca6c8`, song.id)
-    songContent.title = song.name
-    songContent.streamformat = "mp3"
-    songContent.ShortDescriptionLine1 = song.artist_name
-    songContent.album = song.album_name
-    songContent.FHDPosterUrl = song.image
-    m.audioPlayer.content = songContent
+    ' Load 1st song
+    m.audioPlayer.content = loadNextSong()
     m.audioPlayer.control = "play"
 end sub
 
@@ -113,7 +106,7 @@ sub onStateChange()
         m.progressDialog.close = true
 
         if m.nowPlaying.translation[1] <> 600
-            m.nowPlaying.translation = [0, 600]
+            m.showNowPlayingAnimation.control = "start"
         end if
         currentSong = m.audioPlayer.content
         m.nowPlaying.trackArtist = currentSong.ShortDescriptionLine1
@@ -125,16 +118,7 @@ sub onStateChange()
 
     if LCase(m.audioPlayer.state) = "finished"
         if m.indexList.count() > 0
-            song = m.getTracksTask.responseBody.results[m.indexList.shift()]
-            songContent = createObject("RoSGNode", "ContentNode")
-            songContent.ContentType = 5
-            songContent.url = api.tracks.file(`7a2ca6c8`, song.id)
-            songContent.title = song.name
-            songContent.streamformat = "mp3"
-            songContent.ShortDescriptionLine1 = song.artist_name
-            songContent.album = song.album_name
-            songContent.FHDPosterUrl = song.image
-            m.audioPlayer.content = songContent
+            m.audioPlayer.content = loadNextSong()
             m.audioPlayer.control = "play"
             return
         end if
@@ -142,13 +126,26 @@ sub onStateChange()
 
     ' There are no more songs in the queue
     if m.indexList.count() = 0
-        m.nowPlaying.translation = [0, 800]
+        m.hideNowPlayingAnimation.control = "start"
         m.nowPlaying.trackArtist = ""
         m.nowPlaying.trackTitle = ""
         m.nowPlaying.trackAlbum = ""
         m.nowPlaying.trackCover = ""
     end if
 end sub
+
+function loadNextSong() as object
+    song = m.getTracksTask.responseBody.results[m.indexList.shift()]
+    songContent = createObject("RoSGNode", "ContentNode")
+    songContent.ContentType = 5
+    songContent.url = song.audio
+    songContent.title = song.name
+    songContent.streamformat = "mp3"
+    songContent.ShortDescriptionLine1 = song.artist_name
+    songContent.album = song.album_name
+    songContent.FHDPosterUrl = song.image
+    return songContent
+end function
 
 function onKeyEvent(key as string, press as boolean) as boolean
     if not press then return false
