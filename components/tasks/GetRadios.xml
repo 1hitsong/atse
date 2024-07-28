@@ -2,7 +2,6 @@
 
 <component name="GetRadios" extends="Task">
     <interface>
-        <field id="clientID" type="string" />
         <field id="radioID" type="integer" />
         <field id="limit" type="integer" />
         <field id="offset" type="integer" />

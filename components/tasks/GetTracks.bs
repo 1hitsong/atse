@@ -7,5 +7,7 @@ sub init()
 end sub
 
 sub getTracks()
-    m.top.responseBody = api.tracks.get(m.top.params)
+    params = m.top.params
+    params.AddReplace("client_id", m.global.clientID)
+    m.top.responseBody = api.tracks.get(params)
 end sub

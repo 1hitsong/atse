@@ -7,6 +7,15 @@ function isValid(input as dynamic) as boolean
     return input <> invalid
 end function
 
+' isEmpty: Returns whether or not passed object is empty
+'
+' @param {dynamic} input - item to be evaluated
+'
+' @return {boolean} indicating if passed object is empty
+function isEmpty(input as object) as boolean
+    return input.count() = 0
+end function
+
 ' isAllValid: Returns whether or not all items in passed array are valid
 '
 ' @param {object} input - array of items to be evaluated

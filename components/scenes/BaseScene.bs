@@ -32,7 +32,6 @@ sub onSelectedRadioChange()
     m.getRadiosTask = createObject("roSGNode", "GetRadios")
     m.getRadiosTask.observeField("responseBody", "onResponseBodyLoaded")
 
-    m.getRadiosTask.clientID = `7a2ca6c8`
     m.getRadiosTask.radioID = m.radioGrid.selectedRadio
     m.getRadiosTask.control = "RUN"
 end sub
@@ -45,10 +44,9 @@ sub onResponseBodyLoaded()
     m.getTracksTask.observeField("responseBody", "onTracksLoaded")
 
     m.getTracksTask.params = {
-        client_id: `7a2ca6c8`,
         format: "jsonpretty",
         limit: 200,
-        lang: "en"
+        lang: "en",
         ' featured: 1,
         ' speed: "veryhigh",
         type: "single+albumtrack",
@@ -86,29 +84,41 @@ sub onTracksLoaded()
         return
     end if
 
-    if m.getTracksTask.responseBody.results.count() = 0
+    if isEmpty(m.getTracksTask.responseBody.results)
         noTracksFound()
         return
     end if
 
     ' Create an array of all possible song indexes
-    m.indexList = []
+    indexList = []
     for i = 0 to m.getTracksTask.responseBody.results.count() - 1
-        m.indexList.push(i)
+        indexList.push(i)
     end for
 
-    ' Shuffle song indexes
-    for i = 0 to m.indexList.count() - 1
-        j = Rnd(m.indexList.count() - 1)
-        temp = m.indexList[i]
-        m.indexList[i] = m.indexList[j]
-        m.indexList[j] = temp
-    end for
+    m.indexList = shuffleArray(indexList)
 
     ' Load 1st song
     m.audioPlayer.content = loadNextSong()
     m.audioPlayer.control = "play"
 end sub
+
+function shuffleArray(input as object) as object
+
+    if not isValid(input) then return []
+    if isEmpty(input) then return []
+
+    arrayToShuffle = input.slice()
+
+    ' Shuffle song indexes
+    for i = 0 to arrayToShuffle.count() - 1
+        j = Rnd(arrayToShuffle.count() - 1)
+        temp = arrayToShuffle[i]
+        arrayToShuffle[i] = arrayToShuffle[j]
+        arrayToShuffle[j] = temp
+    end for
+
+    return arrayToShuffle
+end function
 
 sub onStateChange()
     m.nowPlaying.isPaused = LCase(m.audioPlayer.state) = "paused"
@@ -136,7 +146,7 @@ sub onStateChange()
     end if
 
     ' There are no more songs in the queue
-    if m.indexList.count() = 0
+    if isEmpty(m.indexList)
         m.hideNowPlayingAnimation.control = "start"
         m.nowPlaying.trackArtist = ""
         m.nowPlaying.trackTitle = ""

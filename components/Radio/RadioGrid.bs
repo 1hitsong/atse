@@ -8,7 +8,6 @@ sub getData()
     m.getRadiosTask = createObject("roSGNode", "GetRadios")
     m.getRadiosTask.observeField("responseBody", "onResponseBodyLoaded")
 
-    m.getRadiosTask.clientID = `7a2ca6c8`
     m.getRadiosTask.limit = 50
     m.getRadiosTask.offset = 0
     m.getRadiosTask.control = "RUN"
