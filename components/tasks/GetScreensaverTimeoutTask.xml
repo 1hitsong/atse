@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<component name="GetScreensaverTimeoutTask" extends="Task">
+    <interface>
+        <field id="responseBody" type="integer" value="0" />
+    </interface>
+</component>

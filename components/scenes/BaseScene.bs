@@ -5,6 +5,8 @@ sub init()
     m.top.backgroundColor = "#262626"
     m.top.backgroundURI = ""
 
+    m.deviceInfo = CreateObject("roDeviceInfo")
+
     m.audioPlayer = m.top.findNode("audioPlayer")
     m.nowPlaying = m.top.findNode("nowPlaying")
 
@@ -17,10 +19,51 @@ sub init()
     m.radioGrid = m.top.findNode("radioGrid")
     m.radioGrid.setFocus(true)
     m.radioGrid.observeField("selectedRadio", "onSelectedRadioChange")
+
+    m.screensaverTimeout = 0
+    m.screensaverActive = false
+
+    m.getScreensaverTimeoutTask = createObject("roSGNode", "GetScreensaverTimeoutTask")
+    m.getScreensaverTimeoutTask.observeField("responseBody", "onScreensaverTimeoutLoaded")
+    m.getScreensaverTimeoutTask.control = "RUN"
+end sub
+
+sub onScreensaverTimeoutLoaded()
+    m.getScreensaverTimeoutTask.unobserveField("responseBody")
+    if not isValid(m.getScreensaverTimeoutTask.responseBody) then return
+    m.screensaverTimeout = m.getScreensaverTimeoutTask.responseBody
+end sub
+
+sub activateScreensaver()
+    if not m.audioPlayer.disableScreenSaver then return
+
+    screenSaver = createObject("roSGNode", "ScreenSaver")
+    screenSaver.id = "screenSaver"
+    screenSaver.trackCover = m.audioPlayer.content.FHDPosterUrl
+    m.top.appendChild(screenSaver)
+
+    m.screensaverActive = true
+end sub
+
+sub deactivateScreensaver()
+    screenSaver = m.top.findNode("screenSaver")
+    if not isValid(screenSaver) then return
+
+    m.top.removeChild(screenSaver)
+
+    m.screensaverActive = false
 end sub
 
 sub onPositionChange()
     m.nowPlaying.position = m.audioPlayer.position / m.audioPlayer.duration
+
+    if not m.screensaverActive
+        if m.screensaverTimeout <> 0
+            if m.deviceInfo.TimeSinceLastKeypress() > m.getScreensaverTimeoutTask.responseBody
+                activateScreensaver()
+            end if
+        end if
+    end if
 end sub
 
 sub onSelectedRadioChange()
@@ -176,18 +219,14 @@ function loadNextSong() as object
 end function
 
 function onKeyEvent(key as string, press as boolean) as boolean
+    if m.screensaverActive
+        deactivateScreensaver()
+    end if
+
     if not press then return false
 
     if LCase(key) = "play"
         m.audioPlayer.control = LCase(m.audioPlayer.state) = "paused" ? "resume" : "pause"
-        return true
-    end if
-
-    if LCase(key) = "up"
-        screenSaver = createObject("roSGNode", "ScreenSaver")
-        screenSaver.id = "screenSaver"
-        screenSaver.trackCover = m.audioPlayer.content.FHDPosterUrl
-        m.top.appendChild(screenSaver)
         return true
     end if
 
