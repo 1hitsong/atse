@@ -1,0 +1,85 @@
+import "pkg:/source/utilities/utilities.bs"
+
+sub init()
+    m.layer1 = m.top.findNode("layer1")
+    m.layer2 = m.top.findNode("layer2")
+    m.layer3 = m.top.findNode("layer3")
+end sub
+
+sub setCover()
+    registerNewPoster(Rnd(15), 0)
+    registerNewPoster(Rnd(15), 1)
+    registerNewPoster(Rnd(15), 2)
+    registerNewPoster(Rnd(15), 3)
+    registerNewPoster(Rnd(15), 4)
+    registerNewPoster(Rnd(15), 5)
+    registerNewPoster(Rnd(15), 6)
+    registerNewPoster(Rnd(15), 7)
+    registerNewPoster(Rnd(15), 8)
+    registerNewPoster(Rnd(15), 9)
+end sub
+
+sub registerNewPoster(delay, posterIndex)
+    newPosterID = `newPoster${posterIndex}`
+    posterNode = m.top.findNode(newPosterID)
+    if isValid(posterNode) then return
+
+    horizPosition = Rnd(1080)
+    animationType = Rnd(4)
+
+    if animationType = 1
+        size = "200"
+        duration = 15
+        targetLayer = m.layer1
+        blendColor = "#FFFFFF"
+    else if animationType = 2
+        size = "100"
+        duration = 25
+        targetLayer = m.layer2
+        blendColor = "#AAAAAA"
+    else
+        size = "40"
+        duration = 40
+        targetLayer = m.layer3
+        blendColor = "#555555"
+    end if
+
+    newPoster = createObject("roSGNode", "Poster")
+    newPoster.id = `newPoster${posterIndex}`
+    newPoster.blendColor = blendColor
+    newPoster.width = size
+    newPoster.height = size
+    newPoster.uri = m.top.trackCover
+    newPoster.translation = `[${horizPosition}, -200]`
+    m.top.appendChild(newPoster)
+
+    newAnimation = createObject("roSGNode", "Animation")
+    newAnimation.duration = duration
+    newAnimation.repeat = "false"
+    newAnimation.easeFunction = "linear"
+    newAnimation.delay = delay
+
+    newVector2DFieldInterpolator = createObject("roSGNode", "Vector2DFieldInterpolator")
+    newVector2DFieldInterpolator.key = "[0.0, 1.0]"
+    newVector2DFieldInterpolator.keyValue = `[[${horizPosition}, -200], [${horizPosition}, 800]]`
+    newVector2DFieldInterpolator.fieldToInterp = `newPoster${posterIndex}.translation`
+
+    newAnimation.appendChild(newVector2DFieldInterpolator)
+    newAnimation.observeFieldScoped("state", "onAnimationStateChange")
+    targetLayer.appendChild(newAnimation)
+
+    newAnimation.control = "start"
+end sub
+
+sub onAnimationStateChange(msg)
+    animationNode = msg.getRoSGNode()
+    if LCase(animationNode.state) = "stopped"
+        posterID = animationNode.getChild(0).fieldToInterp.replace(".translation", "")
+        posterIndex = Right(posterID, 1)
+        posterNode = m.top.findNode(posterID)
+        if isValid(posterNode)
+            posterNode.getParent().removeChild(posterNode)
+            registerNewPoster(Rnd(10), posterIndex)
+        end if
+    end if
+end sub

@@ -53,7 +53,7 @@ sub onResponseBodyLoaded()
         tags: selectedRadioGenre,
         groupby: "artist_id",
         audioformat: "mp32",
-        imagesize: "100"
+        imagesize: "200"
     }
     m.getTracksTask.control = "RUN"
 end sub
@@ -124,6 +124,7 @@ sub onStateChange()
     m.nowPlaying.isPaused = LCase(m.audioPlayer.state) = "paused"
 
     if LCase(m.audioPlayer.state) = "playing"
+        m.audioPlayer.disableScreenSaver = true
         m.progressDialog.close = true
 
         if m.nowPlaying.translation[1] <> 600
@@ -134,6 +135,11 @@ sub onStateChange()
         m.nowPlaying.trackTitle = currentSong.title
         m.nowPlaying.trackAlbum = currentSong.album
         m.nowPlaying.trackCover = currentSong.FHDPosterUrl
+
+        screenSaver = m.top.findNode("screenSaver")
+        if isValid(screenSaver)
+            screenSaver.trackCover = currentSong.FHDPosterUrl
+        end if
         return
     end if
 
@@ -147,6 +153,7 @@ sub onStateChange()
 
     ' There are no more songs in the queue
     if isEmpty(m.indexList)
+        m.audioPlayer.disableScreenSaver = false
         m.hideNowPlayingAnimation.control = "start"
         m.nowPlaying.trackArtist = ""
         m.nowPlaying.trackTitle = ""
@@ -173,6 +180,14 @@ function onKeyEvent(key as string, press as boolean) as boolean
 
     if LCase(key) = "play"
         m.audioPlayer.control = LCase(m.audioPlayer.state) = "paused" ? "resume" : "pause"
+        return true
+    end if
+
+    if LCase(key) = "up"
+        screenSaver = createObject("roSGNode", "ScreenSaver")
+        screenSaver.id = "screenSaver"
+        screenSaver.trackCover = m.audioPlayer.content.FHDPosterUrl
+        m.top.appendChild(screenSaver)
         return true
     end if
 

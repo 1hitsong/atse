@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="ScreenSaver" extends="Group">
+    <children>
+        <Rectangle
+            color="0x000000FF"
+            height="800"
+            translation="[0,0]"
+            width="1280"
+        />
+        <Group id="layer3" />
+        <Group id="layer2" />
+        <Group id="layer1" />
+    </children>
+    <interface>
+        <field id="trackCover" type="string" onChange="setCover" />
+    </interface>
+</component>
