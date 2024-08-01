@@ -11,8 +11,10 @@ end function
 '
 ' @param {dynamic} input - item to be evaluated
 '
-' @return {boolean} indicating if passed object is empty
+' @return {boolean} indicating if passed object has no count or is not valid
 function isEmpty(input as object) as boolean
+    if not isValid(input) then return true
+
     return input.count() = 0
 end function
 
@@ -65,4 +67,9 @@ end function
 ' @return {string} with encoded characters replaced
 function decode(input as string) as string
     return input.replace("&amp;", "&")
+end function
+
+
+function roundToNearest(target as integer, input as dynamic) as integer
+    return (int(input / target) * target)
 end function

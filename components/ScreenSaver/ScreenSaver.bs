@@ -1,5 +1,11 @@
 import "pkg:/source/utilities/utilities.bs"
 
+enum AnimationElementType
+    Foreground = 1
+    Middleground
+    Background
+end enum
+
 sub init()
     m.layer1 = m.top.findNode("layer1")
     m.layer2 = m.top.findNode("layer2")
@@ -20,19 +26,20 @@ sub setCover()
 end sub
 
 sub registerNewPoster(delay, posterIndex)
-    newPosterID = `newPoster${posterIndex}`
-    posterNode = m.top.findNode(newPosterID)
+    posterNode = m.top.findNode(`newPoster${posterIndex}`)
+
+    ' If posterNode is already in use, exit
     if isValid(posterNode) then return
 
-    horizPosition = Rnd(1080)
+    horizPosition = roundToNearest(50, Rnd(1080))
     animationType = Rnd(4)
 
-    if animationType = 1
+    if animationType = AnimationElementType.Foreground
         size = "200"
         duration = 15
         targetLayer = m.layer1
         blendColor = "#FFFFFF"
-    else if animationType = 2
+    else if animationType = AnimationElementType.Middleground
         size = "100"
         duration = 25
         targetLayer = m.layer2

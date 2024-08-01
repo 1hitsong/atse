@@ -31,6 +31,7 @@ end sub
 sub onScreensaverTimeoutLoaded()
     m.getScreensaverTimeoutTask.unobserveField("responseBody")
     if not isValid(m.getScreensaverTimeoutTask.responseBody) then return
+
     m.screensaverTimeout = m.getScreensaverTimeoutTask.responseBody
 end sub
 
@@ -74,13 +75,20 @@ sub onSelectedRadioChange()
 
     m.getRadiosTask = createObject("roSGNode", "GetRadios")
     m.getRadiosTask.observeField("responseBody", "onResponseBodyLoaded")
-
     m.getRadiosTask.radioID = m.radioGrid.selectedRadio
     m.getRadiosTask.control = "RUN"
 end sub
 
 sub onResponseBodyLoaded()
-    if not isValid(m.getRadiosTask.responseBody) then return
+    if not isValid(m.getRadiosTask.responseBody)
+        noTracksFound()
+        return
+    end if
+    if isEmpty(m.getRadiosTask.responseBody.results)
+        noTracksFound()
+        return
+    end if
+
     selectedRadioGenre = LCase(m.getRadiosTask.responseBody.results[0].name)
 
     m.getTracksTask = createObject("roSGNode", "GetTracks")
@@ -122,11 +130,6 @@ sub onTracksLoaded()
         return
     end if
 
-    if not isValid(m.getTracksTask.responseBody.results)
-        noTracksFound()
-        return
-    end if
-
     if isEmpty(m.getTracksTask.responseBody.results)
         noTracksFound()
         return
@@ -147,7 +150,6 @@ end sub
 
 function shuffleArray(input as object) as object
 
-    if not isValid(input) then return []
     if isEmpty(input) then return []
 
     arrayToShuffle = input.slice()
@@ -187,7 +189,7 @@ sub onStateChange()
     end if
 
     if LCase(m.audioPlayer.state) = "finished"
-        if m.indexList.count() > 0
+        if not isEmpty(m.indexList)
             m.audioPlayer.content = loadNextSong()
             m.audioPlayer.control = "play"
             return
