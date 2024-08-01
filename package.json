@@ -16,10 +16,7 @@
     "type": "git",
     "url": "https://github.com/1hitsong/atse.git"
   },
-  "keywords": [
-    "roku",
-    "atse"
-  ],
+  "keywords": ["roku", "atse", "music", "radio"],
   "author": "1hitsong",
   "license": "GPL-3.0",
   "bugs": {
