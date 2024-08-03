@@ -1,0 +1,5 @@
+enum AnimationElementType
+    Foreground = 1
+    Middleground
+    Background
+end enum

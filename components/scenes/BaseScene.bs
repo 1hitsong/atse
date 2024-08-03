@@ -1,5 +1,7 @@
 import "pkg:/source/utilities/utilities.bs"
 import "pkg:/source/api/jamendoSDK.bs"
+import "pkg:/source/enum/Playback/PlaybackState.bs"
+import "pkg:/source/enum/Playback/PlaybackCommand.bs"
 
 sub init()
     m.top.backgroundColor = "#262626"
@@ -145,7 +147,7 @@ sub onTracksLoaded()
 
     ' Load 1st song
     m.audioPlayer.content = loadNextSong()
-    m.audioPlayer.control = "play"
+    m.audioPlayer.control = PlaybackCommand.Play
 end sub
 
 function shuffleArray(input as object) as object
@@ -166,9 +168,9 @@ function shuffleArray(input as object) as object
 end function
 
 sub onStateChange()
-    m.nowPlaying.isPaused = LCase(m.audioPlayer.state) = "paused"
+    m.nowPlaying.isPaused = LCase(m.audioPlayer.state) = PlaybackState.Paused
 
-    if LCase(m.audioPlayer.state) = "playing"
+    if LCase(m.audioPlayer.state) = PlaybackState.Playing
         m.audioPlayer.disableScreenSaver = true
         m.progressDialog.close = true
 
@@ -188,10 +190,10 @@ sub onStateChange()
         return
     end if
 
-    if LCase(m.audioPlayer.state) = "finished"
+    if LCase(m.audioPlayer.state) = PlaybackState.Finished
         if not isEmpty(m.indexList)
             m.audioPlayer.content = loadNextSong()
-            m.audioPlayer.control = "play"
+            m.audioPlayer.control = PlaybackCommand.Play
             return
         end if
     end if
@@ -228,7 +230,7 @@ function onKeyEvent(key as string, press as boolean) as boolean
     if not press then return false
 
     if LCase(key) = "play"
-        m.audioPlayer.control = LCase(m.audioPlayer.state) = "paused" ? "resume" : "pause"
+        m.audioPlayer.control = LCase(m.audioPlayer.state) = PlaybackState.Paused ? PlaybackCommand.Resume : PlaybackCommand.Pause
         return true
     end if
 

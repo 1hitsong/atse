@@ -1,10 +1,7 @@
 import "pkg:/source/utilities/utilities.bs"
-
-enum AnimationElementType
-    Foreground = 1
-    Middleground
-    Background
-end enum
+import "pkg:/source/enum/Animation/AnimationElementType.bs"
+import "pkg:/source/enum/Animation/AnimationCommand.bs"
+import "pkg:/source/enum/Animation/AnimationState.bs"
 
 sub init()
     m.layer1 = m.top.findNode("layer1")
@@ -13,80 +10,115 @@ sub init()
 end sub
 
 sub setCover()
-    registerNewPoster(Rnd(15), 0)
-    registerNewPoster(Rnd(15), 1)
-    registerNewPoster(Rnd(15), 2)
-    registerNewPoster(Rnd(15), 3)
-    registerNewPoster(Rnd(15), 4)
-    registerNewPoster(Rnd(15), 5)
-    registerNewPoster(Rnd(15), 6)
-    registerNewPoster(Rnd(15), 7)
-    registerNewPoster(Rnd(15), 8)
-    registerNewPoster(Rnd(15), 9)
+    for i = 0 to 9
+        registerNewPoster(Rnd(15), i)
+    end for
 end sub
 
-sub registerNewPoster(delay, posterIndex)
+function chooseAnimationParams() as object
+    animationParams = {}
+
+    animationType = Rnd(4)
+
+    if animationType = AnimationElementType.Foreground
+        animationParams.size = "200"
+        animationParams.duration = 15
+        animationParams.targetLayer = m.layer1
+        animationParams.blendColor = "#FFFFFF"
+    else if animationType = AnimationElementType.Middleground
+        animationParams.size = "100"
+        animationParams.duration = 25
+        animationParams.targetLayer = m.layer2
+        animationParams.blendColor = "#AAAAAA"
+    else
+        animationParams.size = "40"
+        animationParams.duration = 40
+        animationParams.targetLayer = m.layer3
+        animationParams.blendColor = "#555555"
+    end if
+
+    animationParams.horizPosition = roundToNearest(50, Rnd(1080))
+
+    return animationParams
+end function
+
+function createPoster(posterIndex as dynamic, animationParams as object, trackCover as string) as object
+    newPoster = createObject("roSGNode", "Poster")
+    newPoster.id = `newPoster${posterIndex}`
+    newPoster.blendColor = animationParams.blendColor
+    newPoster.width = animationParams.size
+    newPoster.height = animationParams.size
+    newPoster.uri = trackCover
+    newPoster.translation = `[${animationParams.horizPosition}, -200]`
+
+    return newPoster
+end function
+
+function createAnimation(animationParams as object, delay as integer) as object
+    newAnimation = createObject("roSGNode", "Animation")
+    newAnimation.duration = animationParams.duration
+    newAnimation.repeat = "false"
+    newAnimation.easeFunction = "linear"
+    newAnimation.delay = delay
+
+    return newAnimation
+end function
+
+function createInterpolator(posterIndex as dynamic, animationParams as object) as object
+    newVector2DFieldInterpolator = createObject("roSGNode", "Vector2DFieldInterpolator")
+    newVector2DFieldInterpolator.key = "[0.0, 1.0]"
+    newVector2DFieldInterpolator.keyValue = `[[${animationParams.horizPosition}, -200], [${animationParams.horizPosition}, 800]]`
+    newVector2DFieldInterpolator.fieldToInterp = `newPoster${posterIndex}.translation`
+
+    return newVector2DFieldInterpolator
+end function
+
+sub registerNewPoster(delay as integer, posterIndex as dynamic)
     posterNode = m.top.findNode(`newPoster${posterIndex}`)
 
     ' If posterNode is already in use, exit
     if isValid(posterNode) then return
 
-    horizPosition = roundToNearest(50, Rnd(1080))
-    animationType = Rnd(4)
+    animationParams = chooseAnimationParams()
 
-    if animationType = AnimationElementType.Foreground
-        size = "200"
-        duration = 15
-        targetLayer = m.layer1
-        blendColor = "#FFFFFF"
-    else if animationType = AnimationElementType.Middleground
-        size = "100"
-        duration = 25
-        targetLayer = m.layer2
-        blendColor = "#AAAAAA"
-    else
-        size = "40"
-        duration = 40
-        targetLayer = m.layer3
-        blendColor = "#555555"
-    end if
+    newPoster = createPoster(posterIndex, animationParams, m.top.trackCover)
+    animationParams.targetLayer.appendChild(newPoster)
 
-    newPoster = createObject("roSGNode", "Poster")
-    newPoster.id = `newPoster${posterIndex}`
-    newPoster.blendColor = blendColor
-    newPoster.width = size
-    newPoster.height = size
-    newPoster.uri = m.top.trackCover
-    newPoster.translation = `[${horizPosition}, -200]`
-    m.top.appendChild(newPoster)
-
-    newAnimation = createObject("roSGNode", "Animation")
-    newAnimation.duration = duration
-    newAnimation.repeat = "false"
-    newAnimation.easeFunction = "linear"
-    newAnimation.delay = delay
-
-    newVector2DFieldInterpolator = createObject("roSGNode", "Vector2DFieldInterpolator")
-    newVector2DFieldInterpolator.key = "[0.0, 1.0]"
-    newVector2DFieldInterpolator.keyValue = `[[${horizPosition}, -200], [${horizPosition}, 800]]`
-    newVector2DFieldInterpolator.fieldToInterp = `newPoster${posterIndex}.translation`
-
-    newAnimation.appendChild(newVector2DFieldInterpolator)
+    newAnimation = createAnimation(animationParams, delay)
+    newInterpolator = createInterpolator(posterIndex, animationParams)
+    newAnimation.appendChild(newInterpolator)
     newAnimation.observeFieldScoped("state", "onAnimationStateChange")
-    targetLayer.appendChild(newAnimation)
 
-    newAnimation.control = "start"
+    m.top.appendChild(newAnimation)
+
+    newAnimation.control = AnimationCommand.Start
 end sub
+
+function getPosterID(animationNode as dynamic) as string
+    return animationNode.getChild(0).fieldToInterp.replace(".translation", "")
+end function
+
+function getPosterData(animationNode as dynamic) as object
+    posterData = {}
+    posterData.id = getPosterID(animationNode)
+    posterData.index = Right(posterData.id, 1)
+    posterData.node = m.top.findNode(posterData.id)
+    posterData.parentNode = posterData.node.getParent()
+    return posterData
+end function
 
 sub onAnimationStateChange(msg)
     animationNode = msg.getRoSGNode()
-    if LCase(animationNode.state) = "stopped"
-        posterID = animationNode.getChild(0).fieldToInterp.replace(".translation", "")
-        posterIndex = Right(posterID, 1)
-        posterNode = m.top.findNode(posterID)
-        if isValid(posterNode)
-            posterNode.getParent().removeChild(posterNode)
-            registerNewPoster(Rnd(10), posterIndex)
+    if not isAllValid([animationNode, animationNode.state]) then return
+
+    if LCase(animationNode.state) = AnimationState.Stopped
+        posterData = getPosterData(animationNode)
+
+        m.top.removeChild(animationNode)
+
+        if isAllValid([posterData.node, posterData.parentNode])
+            posterData.parentNode.removeChild(posterData.node)
+            registerNewPoster(Rnd(15), posterData.index)
         end if
     end if
 end sub

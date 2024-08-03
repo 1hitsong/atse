@@ -1,0 +1,5 @@
+enum PlaybackState
+    Paused = "paused"
+    Playing = "playing"
+    Finished = "finished"
+end enum

@@ -1,0 +1,5 @@
+enum PlaybackCommand
+    Resume = "resume"
+    Pause = "pause"
+    Play = "play"
+end enum
