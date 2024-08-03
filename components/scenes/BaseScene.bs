@@ -75,23 +75,7 @@ sub onSelectedRadioChange()
     m.progressDialog.message = "Loading radio data"
     m.top.getScene().dialog = m.progressDialog
 
-    m.getRadiosTask = createObject("roSGNode", "GetRadios")
-    m.getRadiosTask.observeField("responseBody", "onResponseBodyLoaded")
-    m.getRadiosTask.radioID = m.radioGrid.selectedRadio
-    m.getRadiosTask.control = "RUN"
-end sub
-
-sub onResponseBodyLoaded()
-    if not isValid(m.getRadiosTask.responseBody)
-        noTracksFound()
-        return
-    end if
-    if isEmpty(m.getRadiosTask.responseBody.results)
-        noTracksFound()
-        return
-    end if
-
-    selectedRadioGenre = LCase(m.getRadiosTask.responseBody.results[0].name)
+    selectedRadioGenre = LCase(m.radioGrid.selectedRadio)
 
     m.getTracksTask = createObject("roSGNode", "GetTracks")
     m.getTracksTask.observeField("responseBody", "onTracksLoaded")

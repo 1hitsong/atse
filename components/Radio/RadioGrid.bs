@@ -21,13 +21,14 @@ sub onResponseBodyLoaded()
     data = CreateObject("roSGNode", "ContentNode")
 
     for each radio in m.getRadiosTask.responseBody.results
+
         ' For now, ignore problamatic radio stations
         if radio.id = 1 then continue for
         if radio.id > 13 then continue for
 
         gridAlbum = CreateObject("roSGNode", "ContentNode")
 
-        gridAlbum.id = radio.id
+        gridAlbum.id = radio.name
         gridAlbum.shortdescriptionline1 = radio.dispname
         gridAlbum.HDGRIDPOSTERURL = radio.image
         gridAlbum.hdposterurl = radio.image
@@ -36,6 +37,15 @@ sub onResponseBodyLoaded()
 
         data.appendChild(gridAlbum)
     end for
+
+    manualAlbum = CreateObject("roSGNode", "ContentNode")
+    manualAlbum.id = "punk"
+    manualAlbum.shortdescriptionline1 = "Punk Radio"
+    manualAlbum.HDGRIDPOSTERURL = "pkg:/source/images/stations/punk.jpg"
+    manualAlbum.hdposterurl = "pkg:/source/images/stations/punk.jpg"
+    manualAlbum.SDGRIDPOSTERURL = "pkg:/source/images/stations/punk.jpg"
+    manualAlbum.sdposterurl = "pkg:/source/images/stations/punk.jpg"
+    data.appendChild(manualAlbum)
 
     m.top.content = data
 end sub

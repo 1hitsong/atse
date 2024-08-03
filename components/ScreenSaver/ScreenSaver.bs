@@ -85,10 +85,8 @@ sub registerNewPoster(delay as integer, posterIndex as dynamic)
     animationParams.targetLayer.appendChild(newPoster)
 
     newAnimation = createAnimation(animationParams, delay)
-    newInterpolator = createInterpolator(posterIndex, animationParams)
-    newAnimation.appendChild(newInterpolator)
+    newAnimation.appendChild(createInterpolator(posterIndex, animationParams))
     newAnimation.observeFieldScoped("state", "onAnimationStateChange")
-
     m.top.appendChild(newAnimation)
 
     newAnimation.control = AnimationCommand.Start
