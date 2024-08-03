@@ -5,6 +5,12 @@ sub init()
 end sub
 
 sub getData()
+    userRadioStations = getUserStations()
+    if isValid(userRadioStations)
+        setRadioContent(userRadioStations)
+        return
+    end if
+
     m.getRadiosTask = createObject("roSGNode", "GetRadios")
     m.getRadiosTask.observeField("responseBody", "onResponseBodyLoaded")
 
@@ -15,16 +21,34 @@ end sub
 
 sub onResponseBodyLoaded()
     m.getRadiosTask.unobserveField("responseBody")
-
     if not isValid(m.getRadiosTask.responseBody) then return
+    if not isValid(m.getRadiosTask.responseBody.results) then return
+
+    userRadioStations = m.getRadiosTask.responseBody.results
+
+    ' Add Punk Radio
+    userRadioStations.push({
+        name: "punk",
+        dispname: "Punk Radio",
+        image: "pkg:/source/images/stations/punk.jpg"
+    })
+
+    setUserStations(userRadioStations)
+
+    setRadioContent(userRadioStations)
+end sub
+
+sub setRadioContent(dataSource as object)
 
     data = CreateObject("roSGNode", "ContentNode")
 
-    for each radio in m.getRadiosTask.responseBody.results
+    for each radio in dataSource
 
-        ' For now, ignore problamatic radio stations
-        if radio.id = 1 then continue for
-        if radio.id > 13 then continue for
+        ' For now, ignore problamatic default radio stations
+        if LCase(type(radio.id)) = "roint" or LCase(type(radio.id)) = "integer"
+            if radio.id = 1 then continue for
+            if radio.id > 13 then continue for
+        end if
 
         gridAlbum = CreateObject("roSGNode", "ContentNode")
 
@@ -38,16 +62,27 @@ sub onResponseBodyLoaded()
         data.appendChild(gridAlbum)
     end for
 
-    manualAlbum = CreateObject("roSGNode", "ContentNode")
-    manualAlbum.id = "punk"
-    manualAlbum.shortdescriptionline1 = "Punk Radio"
-    manualAlbum.HDGRIDPOSTERURL = "pkg:/source/images/stations/punk.jpg"
-    manualAlbum.hdposterurl = "pkg:/source/images/stations/punk.jpg"
-    manualAlbum.SDGRIDPOSTERURL = "pkg:/source/images/stations/punk.jpg"
-    manualAlbum.sdposterurl = "pkg:/source/images/stations/punk.jpg"
-    data.appendChild(manualAlbum)
-
     m.top.content = data
+end sub
+
+function getUserStations() as dynamic
+    registrySection = CreateObject("roRegistrySection", "Stations")
+    if registrySection.Exists("UserStations")
+        return ParseJson(registrySection.Read("UserStations"))
+    end if
+    return invalid
+end function
+
+sub setUserStations(userStations as object)
+    registrySection = CreateObject("roRegistrySection", "Stations")
+    registrySection.Write("UserStations", FormatJson(userStations))
+    registrySection.Flush()
+end sub
+
+sub deleteUserStations()
+    registrySection = CreateObject("roRegistrySection", "Stations")
+    registrySection.Delete("UserStations")
+    registrySection.Flush()
 end sub
 
 function onKeyEvent(key as string, press as boolean) as boolean
