@@ -1,15 +1,16 @@
 import "pkg:/source/utilities/utilities.bs"
 
 sub init()
+    ' deleteUserStations()
     getData()
 end sub
 
 sub getData()
-    userRadioStations = getUserStations()
-    if isValid(userRadioStations)
-        setRadioContent(userRadioStations)
-        return
-    end if
+    ' userRadioStations = getUserStations()
+    ' if isValid(userRadioStations)
+    '     setRadioContent(userRadioStations)
+    '     return
+    ' end if
 
     m.getRadiosTask = createObject("roSGNode", "GetRadios")
     m.getRadiosTask.observeField("responseBody", "onResponseBodyLoaded")
@@ -22,16 +23,8 @@ end sub
 sub onResponseBodyLoaded()
     m.getRadiosTask.unobserveField("responseBody")
     if not isValid(m.getRadiosTask.responseBody) then return
-    if not isValid(m.getRadiosTask.responseBody.results) then return
 
-    userRadioStations = m.getRadiosTask.responseBody.results
-
-    ' Add Punk Radio
-    userRadioStations.push({
-        name: "punk",
-        dispname: "Punk Radio",
-        image: "pkg:/source/images/stations/punk.jpg"
-    })
+    userRadioStations = m.getRadiosTask.responseBody
 
     setUserStations(userRadioStations)
 

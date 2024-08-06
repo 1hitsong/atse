@@ -7,26 +7,26 @@
                 id="radioGrid"
                 vertFocusAnimationStyle="fixedFocusWrap"
                 translation="[50,50]"
-                basePosterSize="[150, 100]"
+                basePosterSize="[150, 150]"
+                posterDisplayMode="scaleToZoom"
                 numColumns="6"
                 numRows="2"
                 caption1NumLines="2"
                 itemSpacing="[50, 40]" />
         </Group>
+        <NowPlaying id="nowPlaying" translation="[0, 800]" />
+
         <Label id="disclaimer"
             font="font:SmallestSystemFont"
             color="0xeeeeeeFF"
-            translation="[575,570]"
+            translation="[580,680]"
             text="Music created by JAMENDO members. Content provided by JAMENDO" />
 
-        <NowPlaying id="nowPlaying" translation="[0, 800]" />
-
-        <Animation id="showNowPlayingAnimation" duration="0.5" repeat="false">
-            <Vector2DFieldInterpolator key="[0.0, 1.0]" keyValue="[[0, 800], [0, 600]]"
-                fieldToInterp="nowPlaying.translation" />
-        </Animation>
-        <Animation id="hideNowPlayingAnimation" duration="0.5" repeat="false">
-            <Vector2DFieldInterpolator key="[0.0, 1.0]" keyValue="[[0, 600], [0, 800]]"
+        <Animation id="nowPlayingAnimation" duration="0.5" repeat="false">
+            <Vector2DFieldInterpolator
+                id="nowPlayingInterpolator"
+                key="[0.0, 1.0]"
+                keyValue="[[0, 800], [0, 600]]"
                 fieldToInterp="nowPlaying.translation" />
         </Animation>
     </children>

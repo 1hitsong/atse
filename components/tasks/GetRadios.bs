@@ -7,15 +7,99 @@ sub init()
 end sub
 
 sub getRadios()
-    if not isAllValid([m.global.clientID, m.top.radioID]) then return
 
-    params = {
-        client_id: m.global.clientID,
-        id: m.top.radioID,
-        format: "json",
-        limit: m.top.limit,
-        offset: m.top.offset
-    }
+    radios = [
+        {
+            name: "acoustic",
+            dispname: "Acoustic Radio",
+            image: "pkg:/source/images/stations/acoustic.jpg"
+        },
+        {
+            name: "ambient",
+            dispname: "Ambient Radio",
+            image: "pkg:/source/images/stations/ambient.jpg"
+        },
+        {
+            name: "chillhop",
+            dispname: "Chillhop Radio",
+            image: "pkg:/source/images/stations/chillhop.jpg"
+        },
+        {
+            name: "classical",
+            dispname: "Classical Radio",
+            image: "pkg:/source/images/stations/classical.jpg"
+        },
+        {
+            name: "country",
+            dispname: "Country Radio",
+            image: "pkg:/source/images/stations/country.jpg"
+        },
+        {
+            name: "electronic",
+            dispname: "Electronic Radio",
+            image: "pkg:/source/images/stations/electronic.jpg"
+        },
+        {
+            name: "hiphop",
+            dispname: "Hip Hop Radio",
+            image: "pkg:/source/images/stations/hiphop.jpg"
+        },
+        {
+            name: "indie",
+            dispname: "Indie Radio",
+            image: "pkg:/source/images/stations/indie.jpg"
+        },
+        {
+            name: "jazz",
+            dispname: "Jazz Radio",
+            image: "pkg:/source/images/stations/jazz.jpg"
+        },
+        {
+            name: "lounge",
+            dispname: "Lounge Radio",
+            image: "pkg:/source/images/stations/lounge.jpg"
+        },
+        {
+            name: "metal",
+            dispname: "Metal Radio",
+            image: "pkg:/source/images/stations/metal.jpg"
+        },
+        {
+            name: "pop",
+            dispname: "Pop Radio",
+            image: "pkg:/source/images/stations/pop.jpg"
+        },
+        {
+            name: "punk",
+            dispname: "Punk Radio",
+            image: "pkg:/source/images/stations/punk.jpg"
+        },
+        {
+            name: "relaxation",
+            dispname: "Relaxation Radio",
+            image: "pkg:/source/images/stations/relaxation.jpg"
+        },
+        {
+            name: "rock",
+            dispname: "Rock Radio",
+            image: "pkg:/source/images/stations/rock.jpg"
+        },
+        {
+            name: "shoegaze",
+            dispname: "Shoegaze Radio",
+            image: "pkg:/source/images/stations/shoegaze.jpg"
+        },
+        {
+            name: "soundtrack",
+            dispname: "Soundtrack Radio",
+            image: "pkg:/source/images/stations/soundtrack.jpg"
+        },
+        {
+            name: "world",
+            dispname: "World Radio",
+            image: "pkg:/source/images/stations/world.jpg"
+        },
+    ]
 
-    m.top.responseBody = api.radios.get(params)
+    m.top.responseBody = radios
 end sub

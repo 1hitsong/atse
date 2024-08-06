@@ -11,12 +11,13 @@ sub init()
 
     m.audioPlayer = m.top.findNode("audioPlayer")
     m.nowPlaying = m.top.findNode("nowPlaying")
+    m.disclaimer = m.top.findNode("disclaimer")
 
     m.audioPlayer.observeField("state", "onStateChange")
     m.audioPlayer.observeField("position", "onPositionChange")
 
-    m.showNowPlayingAnimation = m.top.findNode("showNowPlayingAnimation")
-    m.hideNowPlayingAnimation = m.top.findNode("hideNowPlayingAnimation")
+    m.nowPlayingAnimation = m.top.findNode("nowPlayingAnimation")
+    m.nowPlayingInterpolator = m.top.findNode("nowPlayingInterpolator")
 
     m.radioGrid = m.top.findNode("radioGrid")
     m.radioGrid.setFocus(true)
@@ -40,6 +41,9 @@ end sub
 sub activateScreensaver()
     if not m.audioPlayer.disableScreenSaver then return
 
+    m.radioGrid.setFocus(false)
+    m.top.setFocus(true)
+
     screenSaver = createObject("roSGNode", "ScreenSaver")
     screenSaver.id = "screenSaver"
     screenSaver.trackCover = m.audioPlayer.content.FHDPosterUrl
@@ -53,6 +57,7 @@ sub deactivateScreensaver()
     if not isValid(screenSaver) then return
 
     m.top.removeChild(screenSaver)
+    m.radioGrid.setFocus(true)
 
     m.screensaverActive = false
 end sub
@@ -83,7 +88,7 @@ sub onSelectedRadioChange()
     m.getTracksTask.params = {
         format: "jsonpretty",
         limit: 200,
-        lang: "en",
+        ' lang: "en",
         ' featured: 1,
         ' speed: "veryhigh",
         type: "single+albumtrack",
@@ -159,7 +164,9 @@ sub onStateChange()
         m.progressDialog.close = true
 
         if m.nowPlaying.translation[1] <> 600
-            m.showNowPlayingAnimation.control = "start"
+            m.disclaimer.opacity = 0
+            m.nowPlayingInterpolator.reverse = "false"
+            m.nowPlayingAnimation.control = "start"
         end if
         currentSong = m.audioPlayer.content
         m.nowPlaying.trackArtist = currentSong.ShortDescriptionLine1
@@ -185,7 +192,9 @@ sub onStateChange()
     ' There are no more songs in the queue
     if isEmpty(m.indexList)
         m.audioPlayer.disableScreenSaver = false
-        m.hideNowPlayingAnimation.control = "start"
+        m.disclaimer.opacity = 100
+        m.nowPlayingInterpolator.reverse = "true"
+        m.nowPlayingAnimation.control = "start"
         m.nowPlaying.trackArtist = ""
         m.nowPlaying.trackTitle = ""
         m.nowPlaying.trackAlbum = ""

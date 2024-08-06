@@ -5,6 +5,6 @@
         <field id="radioID" type="integer" />
         <field id="limit" type="integer" />
         <field id="offset" type="integer" />
-        <field id="responseBody" type="assocarray" value="{}" />
+        <field id="responseBody" type="array" />
     </interface>
 </component>
