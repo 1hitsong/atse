@@ -227,5 +227,13 @@ function onKeyEvent(key as string, press as boolean) as boolean
         return true
     end if
 
+    if LCase(key) = "replay"
+        if not isEmpty(m.indexList)
+            m.audioPlayer.content = loadNextSong()
+            m.audioPlayer.control = PlaybackCommand.Play
+            return true
+        end if
+    end if
+
     return false
 end function

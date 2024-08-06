@@ -81,7 +81,7 @@ end sub
 function onKeyEvent(key as string, press as boolean) as boolean
     if not press then return false
 
-    if key = "OK"
+    if LCase(key) = "ok"
         m.top.selectedRadio = m.top.content.getChild(m.top.itemFocused).id
         return true
     end if
