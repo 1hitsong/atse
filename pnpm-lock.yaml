@@ -10,10 +10,10 @@ importers:
     dependencies:
       '@rokucommunity/bslint':
         specifier: 0.8.24
-        version: 0.8.24(brighterscript@0.67.7)
+        version: 0.8.24(brighterscript@0.67.8)
       brighterscript:
-        specifier: 0.67.7
-        version: 0.67.7
+        specifier: 0.67.8
+        version: 0.67.8
       roku-deploy:
         specifier: 3.12.1
         version: 3.12.1
@@ -127,8 +127,8 @@ packages:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
 
-  brighterscript@0.67.7:
-    resolution: {integrity: sha512-KvHM3U4AVu3cOprwmWCOjg8Z7eMkehEJJeDp2PABVnT4GcqwOxtObOUITDJiJ5EuPSsmBlCzt1v3eTywyy7hTw==}
+  brighterscript@0.67.8:
+    resolution: {integrity: sha512-2pQcPzW/NCEEofojLuHRDcLuQTmHssNpj1xW2oRiSFMo0YHR5cBIHrG/I71lpJwpyw/HzzK0vcEbthlOW4QVuw==}
     hasBin: true
 
   brotli@1.3.3:
@@ -543,6 +543,10 @@ packages:
     resolution: {integrity: sha512-PEOdiFKGW1jrcoC9zjb+9kOWC/Q3eH7dzPvSi5kKignjNcyDiyJi+/wINwNrzw9SsxAVtw+NLvYueyZi9wQVsw==}
     hasBin: true
 
+  roku-deploy@3.12.2:
+    resolution: {integrity: sha512-CePBiVk+6u4Pka/aq7WR4GnTW39BlAveEbhuDHQX2UfR9+4j3+YEvfXqxB0R69RU52eGfnk1ejI7H0HStEKa2Q==}
+    hasBin: true
+
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
@@ -756,9 +760,9 @@ snapshots:
 
   '@rokucommunity/bslib@0.1.1': {}
 
-  '@rokucommunity/bslint@0.8.24(brighterscript@0.67.7)':
+  '@rokucommunity/bslint@0.8.24(brighterscript@0.67.8)':
     dependencies:
-      brighterscript: 0.67.7
+      brighterscript: 0.67.8
       fs-extra: 10.1.0
       jsonc-parser: 2.3.1
       minimatch: 3.1.2
@@ -834,7 +838,7 @@ snapshots:
     dependencies:
       fill-range: 7.1.1
 
-  brighterscript@0.67.7:
+  brighterscript@0.67.8:
     dependencies:
       '@rokucommunity/bslib': 0.1.1
       '@rokucommunity/logger': 0.3.9
@@ -859,7 +863,7 @@ snapshots:
       parse-ms: 2.1.0
       readline: 1.3.0
       require-relative: 0.8.7
-      roku-deploy: 3.12.1
+      roku-deploy: 3.12.2
       serialize-error: 7.0.1
       source-map: 0.7.4
       vscode-languageserver: 9.0.1
@@ -1257,6 +1261,24 @@ snapshots:
   reusify@1.0.4: {}
 
   roku-deploy@3.12.1:
+    dependencies:
+      chalk: 2.4.2
+      dateformat: 3.0.3
+      dayjs: 1.11.12
+      fast-glob: 3.3.2
+      fs-extra: 7.0.1
+      is-glob: 4.0.3
+      jsonc-parser: 2.3.1
+      jszip: 3.10.1
+      lodash: 4.17.21
+      micromatch: 4.0.7
+      moment: 2.30.1
+      parse-ms: 2.1.0
+      postman-request: 2.88.1-postman.37
+      temp-dir: 2.0.0
+      xml2js: 0.5.0
+
+  roku-deploy@3.12.2:
     dependencies:
       chalk: 2.4.2
       dateformat: 3.0.3
