@@ -15,8 +15,8 @@ importers:
         specifier: 0.67.7
         version: 0.67.7
       roku-deploy:
-        specifier: 3.12.1
-        version: 3.12.1
+        specifier: 3.12.2
+        version: 3.12.2
       undent:
         specifier: 0.1.0
         version: 0.1.0
@@ -539,8 +539,8 @@ packages:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  roku-deploy@3.12.1:
-    resolution: {integrity: sha512-PEOdiFKGW1jrcoC9zjb+9kOWC/Q3eH7dzPvSi5kKignjNcyDiyJi+/wINwNrzw9SsxAVtw+NLvYueyZi9wQVsw==}
+  roku-deploy@3.12.2:
+    resolution: {integrity: sha512-CePBiVk+6u4Pka/aq7WR4GnTW39BlAveEbhuDHQX2UfR9+4j3+YEvfXqxB0R69RU52eGfnk1ejI7H0HStEKa2Q==}
     hasBin: true
 
   run-parallel@1.2.0:
@@ -859,7 +859,7 @@ snapshots:
       parse-ms: 2.1.0
       readline: 1.3.0
       require-relative: 0.8.7
-      roku-deploy: 3.12.1
+      roku-deploy: 3.12.2
       serialize-error: 7.0.1
       source-map: 0.7.4
       vscode-languageserver: 9.0.1
@@ -1256,7 +1256,7 @@ snapshots:
 
   reusify@1.0.4: {}
 
-  roku-deploy@3.12.1:
+  roku-deploy@3.12.2:
     dependencies:
       chalk: 2.4.2
       dateformat: 3.0.3
