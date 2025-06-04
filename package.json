@@ -6,7 +6,7 @@
   "dependencies": {
     "@rokucommunity/bslint": "0.8.31",
     "brighterscript": "0.69.9",
-    "roku-deploy": "3.12.5",
+    "roku-deploy": "3.12.6",
     "undent": "0.1.0"
   },
   "scripts": {
