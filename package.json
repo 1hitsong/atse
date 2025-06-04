@@ -7,7 +7,7 @@
     "@rokucommunity/bslint": "0.8.32",
     "brighterscript": "0.69.9",
     "roku-deploy": "3.12.6",
-    "undent": "0.1.0"
+    "undent": "1.0.0"
   },
   "scripts": {
     "build": "npx bsc --project bsconfig.json"
