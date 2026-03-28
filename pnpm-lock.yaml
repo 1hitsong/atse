@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@rokucommunity/bslint':
-        specifier: 0.8.40
-        version: 0.8.40(brighterscript@0.71.0)
+        specifier: 0.8.41
+        version: 0.8.41(brighterscript@0.71.0)
       brighterscript:
         specifier: 0.71.0
         version: 0.71.0
@@ -53,8 +53,8 @@ packages:
   '@rokucommunity/bslib@0.1.1':
     resolution: {integrity: sha512-2ox6EUL+UTtccTbD4dbVjZK3QHa0PHCqpoKMF8lZz9ayzzEP3iVPF8KZR6hOi6bxsIcbGXVjqmtCVkpC4P9SrA==}
 
-  '@rokucommunity/bslint@0.8.40':
-    resolution: {integrity: sha512-StKbJp2YFvnwtlpmk9R7dHviF8siQI4peAgF8qhdy+JLsYbSJ9JdsNb97C+PPnWfpUtPHrmRWf4dF4FrpPtyiA==}
+  '@rokucommunity/bslint@0.8.41':
+    resolution: {integrity: sha512-fMCJ5jqE96MTpB3iQqzW7uxnZGhyIU8o+MUCuukxn9a83PbwbRJoXw7edYp0Vn2M9uX9aWvSvN5XBv0FB7rG2A==}
     hasBin: true
     peerDependencies:
       brighterscript: '>= 0.59.0 < 1'
@@ -818,7 +818,7 @@ snapshots:
 
   '@rokucommunity/bslib@0.1.1': {}
 
-  '@rokucommunity/bslint@0.8.40(brighterscript@0.71.0)':
+  '@rokucommunity/bslint@0.8.41(brighterscript@0.71.0)':
     dependencies:
       brighterscript: 0.71.0
       fs-extra: 10.1.0
