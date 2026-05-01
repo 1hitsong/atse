@@ -15,8 +15,8 @@ importers:
         specifier: 0.71.1
         version: 0.71.1
       roku-deploy:
-        specifier: 3.17.0
-        version: 3.17.0
+        specifier: 3.17.1
+        version: 3.17.1
       undent:
         specifier: 1.0.0
         version: 1.0.0
@@ -590,8 +590,8 @@ packages:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  roku-deploy@3.17.0:
-    resolution: {integrity: sha512-dfLIxgnPRDaZDeLPf8+JhediHKaya/u9A8aYd2QKaHI9cc4CuedFdBR8Dg8EFckCEO6au/ClumHL7hP3wPyeXQ==}
+  roku-deploy@3.17.1:
+    resolution: {integrity: sha512-D0IEkdrnrh9Pfsw1cH1DVEqbApv94k52W7NLElC8+R4KQ1lGVlGE4LktpSlN9gaazTNycTyIEHHY+sX6EtlKEw==}
     hasBin: true
 
   run-parallel@1.2.0:
@@ -941,7 +941,7 @@ snapshots:
       parse-ms: 2.1.0
       readline: 1.3.0
       require-relative: 0.8.7
-      roku-deploy: 3.17.0
+      roku-deploy: 3.17.1
       safe-json-stringify: 1.2.0
       serialize-error: 7.0.1
       source-map: 0.7.4
@@ -1375,7 +1375,7 @@ snapshots:
 
   reusify@1.0.4: {}
 
-  roku-deploy@3.17.0:
+  roku-deploy@3.17.1:
     dependencies:
       '@types/request': 2.48.12
       chalk: 2.4.2
