@@ -5,7 +5,7 @@
   "description": "A Jamendo client for Roku",
   "dependencies": {
     "@rokucommunity/bslint": "0.8.42",
-    "brighterscript": "0.72.0",
+    "brighterscript": "0.72.1",
     "roku-deploy": "3.17.2",
     "undent": "1.0.0"
   },
