@@ -15,8 +15,8 @@ importers:
         specifier: 0.72.1
         version: 0.72.1
       roku-deploy:
-        specifier: 3.17.2
-        version: 3.17.2
+        specifier: 3.17.3
+        version: 3.17.3
       undent:
         specifier: 1.0.0
         version: 1.0.0
@@ -592,6 +592,10 @@ packages:
 
   roku-deploy@3.17.2:
     resolution: {integrity: sha512-+raRjlp6nkrx3+eLDotJc03tK37t9+Xv2vT+X52+c5FbMQS3zG46KchjCYRIkAtjApw5bC92nYEcU0W9xrcDKw==}
+    hasBin: true
+
+  roku-deploy@3.17.3:
+    resolution: {integrity: sha512-u9xv3ug8Hfhdo0B1+YE8xzaKBuS3hahM4g4gfAief10b5WkT+4jSLGMa/84EUD/HfEDj8h3Dg7Q3gm0StB8B4Q==}
     hasBin: true
 
   run-parallel@1.2.0:
@@ -1378,6 +1382,26 @@ snapshots:
   reusify@1.0.4: {}
 
   roku-deploy@3.17.2:
+    dependencies:
+      '@types/request': 2.48.12
+      chalk: 2.4.2
+      dateformat: 3.0.3
+      dayjs: 1.11.12
+      fast-glob: 3.3.2
+      fs-extra: 7.0.1
+      is-glob: 4.0.3
+      jsonc-parser: 2.3.1
+      jszip: 3.10.1
+      lodash: 4.17.21
+      micromatch: 4.0.7
+      moment: 2.30.1
+      parse-ms: 2.1.0
+      postman-request: 2.88.1-postman.40
+      semver: 7.7.3
+      temp-dir: 2.0.0
+      xml2js: 0.5.0
+
+  roku-deploy@3.17.3:
     dependencies:
       '@types/request': 2.48.12
       chalk: 2.4.2
