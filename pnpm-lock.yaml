@@ -15,8 +15,8 @@ importers:
         specifier: 0.73.0
         version: 0.73.0
       roku-deploy:
-        specifier: 3.17.6
-        version: 3.17.6
+        specifier: 3.17.7
+        version: 3.17.7
       undent:
         specifier: 1.0.1
         version: 1.0.1
@@ -513,6 +513,10 @@ packages:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
 
+  picomatch@2.3.2:
+    resolution: {integrity: sha512-V7+vQEJ06Z+c5tSye8S+nHUfI51xoXIXjHQ99cQtKUkQqqO1kO/KCJUfZXuB47h/YBlDhah2H3hdUGXn8ie0oA==}
+    engines: {node: '>=8.6'}
+
   postman-request@2.88.1-postman.48:
     resolution: {integrity: sha512-E32FGh8ig2KDvzo4Byi7Ibr+wK2gNKPSqXoNsvjdCHgDBxSK4sCUwv+aa3zOBUwfiibPImHMy0WdlDSSCTqTuw==}
     engines: {node: '>= 16'}
@@ -566,6 +570,10 @@ packages:
 
   roku-deploy@3.17.6:
     resolution: {integrity: sha512-5G28I0eNCpKCv34f6jCNvY8e746RE4uTWisGBZSiUqyKnraN6NIZo5VimNWMBajICCAqzUjpqLmJN9q5KXq8mw==}
+    hasBin: true
+
+  roku-deploy@3.17.7:
+    resolution: {integrity: sha512-aEgi9Vq8/D0NhJzY97CtEUUgUwfR0/F20QR/JIMKXKDxAYt8alfgV217WShTbnFMyYYnJflTMRCHP2bJBbriGQ==}
     hasBin: true
 
   run-parallel@1.2.0:
@@ -1266,6 +1274,8 @@ snapshots:
 
   picomatch@2.3.1: {}
 
+  picomatch@2.3.2: {}
+
   postman-request@2.88.1-postman.48:
     dependencies:
       '@postman/form-data': 3.1.1
@@ -1349,6 +1359,23 @@ snapshots:
       postman-request: 2.88.1-postman.48
       semver: 7.7.3
       temp-dir: 2.0.0
+      xml2js: 0.5.0
+    transitivePeerDependencies:
+      - supports-color
+
+  roku-deploy@3.17.7:
+    dependencies:
+      '@types/request': 2.48.13
+      chalk: 2.4.2
+      fast-glob: 3.3.2
+      fs-extra: 7.0.1
+      is-glob: 4.0.3
+      jsonc-parser: 2.3.1
+      jszip: 3.10.1
+      micromatch: 4.0.7
+      picomatch: 2.3.2
+      postman-request: 2.88.1-postman.48
+      semver: 7.7.3
       xml2js: 0.5.0
     transitivePeerDependencies:
       - supports-color
